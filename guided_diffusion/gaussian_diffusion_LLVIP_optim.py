@@ -193,12 +193,9 @@ class GaussianDiffusion:
 
         pbar = tqdm(list(range(self.num_timesteps))[::-1])
         self.criterionGN = GradNormLoss(devices=device, num_of_task=8, topk=3)
-        # self.img2 = Variable(x_start, requires_grad=True)
         self.img2 = Variable(x_start.clone(), requires_grad=True)
         self.optimizer = optim.Adam([self.img2], lr=0.03)
         self.writer = writer
-        # criterionGN = GradNormLoss_custom(devices='cuda', num_of_task=2)
-        # import pdb;pdb.set_trace()
         os.makedirs(os.path.join(save_root, 'loss'), exist_ok=True)
         loss_path = os.path.join(save_root, 'loss', str(img_index) + '.txt')
         f = open(loss_path, 'w')
