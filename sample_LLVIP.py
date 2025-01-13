@@ -5,23 +5,14 @@ import yaml
 import torch
 
 from guided_diffusion.unet import create_model
-# from guided_diffusion.gaussian_diffusion_LLVIP_test import create_sampler
 from guided_diffusion.gaussian_diffusion_LLVIP_optim import create_sampler
-# from guided_diffusion.gaussian_diffusion_LLVIP_test import create_sampler
-from guided_diffusion.PSF import PSF
-# from guided_diffusion.gaussian_diffusion_bak import create_sampler
 from util.logger import get_logger
 import cv2
 import numpy as np
-import torchvision
-from skimage.io import imsave
 from PIL import Image
 from util.wavalets import Wavalets
-# from util.sobel import Sobel
 from conditions.conditions import Sobel
 from torch.utils.tensorboard import SummaryWriter
-import torch.nn as nn
-# from DeepLabV3Plus import network
 
 import warnings
 
@@ -84,10 +75,8 @@ if __name__ == '__main__':
     # Load diffusion sampler
     sampler = create_sampler(**diffusion_config)
     sample_fn = partial(sampler.p_sample_loop, model=model)
-    # sample_fn = partial(sampler.p_sample_loop, model=model, seg_model=seg_model)
 
     # Working directory
-    # test_folder=r"input"
     test_folder = args.input_dir
     out_path = args.output_dir
     os.makedirs(out_path, exist_ok=True)
@@ -139,7 +128,7 @@ if __name__ == '__main__':
         seed = 3407
         torch.manual_seed(seed)
         x_start = torch.randn(vis_img.shape, device=device)
-        ### add
+        # add
         wavalets = Wavalets(J=1, devices=device)
         sobel = Sobel(device)
         sample = sample_fn(x_start=x_start, record=args.record, I=inf_img, V=vis_img, save_root=out_path,
